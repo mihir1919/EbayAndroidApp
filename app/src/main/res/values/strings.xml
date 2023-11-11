@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="horse">Horses</string>
+    <array name="category_options">
+        <item>All</item>
+        <item>Art</item>
+        <item>Baby</item>
+        <item>Books</item>
+        <item>Clothing, Shoes and Accessories</item>
+        <item>Computer, Tablets and Network</item>
+        <item>Health and Beauty</item>
+        <item>Music</item>
+        <item>Video, Games and Consoles</item>
+    </array>
+</resources>

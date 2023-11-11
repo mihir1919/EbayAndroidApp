@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-62dp"
+        tools:layout_editor_absoluteY="-40dp">
+
+        <RelativeLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#512da8"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/headerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Search"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/tabsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/headerLayout"
+            android:background="#512da8"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/searchTabButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Search"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/wishlistTabButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Wishlist"
+                android:onClick="getWishlist"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/formLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabsLayout"
+            android:paddingTop="16dp">
+
+            <TextView
+                android:id="@+id/titleKeyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Keyword" />
+
+            <EditText
+                android:id="@+id/editTextKeyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleKeyword"
+                android:layout_marginTop="8dp"
+                android:hint="Enter keyword" />
+
+            <TextView
+                android:id="@+id/titleCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextKeyword"
+                android:layout_marginTop="16dp"
+                android:text="Category" />
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleCategory"
+                android:layout_marginTop="8dp"
+                android:entries="@array/category_options" />
+
+            <TextView
+                android:id="@+id/titleCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spinnerCategory"
+                android:layout_marginTop="16dp"
+                android:text="Condition" />
+
+
+            <LinearLayout
+                android:id="@+id/conditionCheckBoxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleCondition"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkboxNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New" />
+
+                <CheckBox
+                    android:id="@+id/checkboxUsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Used" />
+
+                <CheckBox
+                    android:id="@+id/checkboxUnspecified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Unspecified" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/titleShippingOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/conditionCheckBoxLayout"
+                android:layout_marginTop="16dp"
+                android:text="Shipping Options" />
+
+            <LinearLayout
+                android:id="@+id/shippingCheckBoxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleShippingOptions"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/checkboxLocalPickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Local Pickup" />
+
+                <CheckBox
+                    android:id="@+id/checkboxFreeShipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Free Shipping" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/checkboxEnableNearbySearchLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shippingCheckBoxLayout"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <CheckBox
+                        android:id="@+id/checkboxEnableNearbySearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:checked="false"
+                        android:layoutDirection="rtl"
+                        android:text="Enable Nearby Search" />
+
+                    <LinearLayout
+                        android:id="@+id/hiddenLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkboxEnableNearbySearch"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Distance"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editTextMilesFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:hint="Miles From"
+                            android:inputType="numberDecimal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:text="From"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/locationRadioGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonCurrentLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="onZipChanged"
+                                android:text="Current Location" />
+
+                            <LinearLayout
+                                android:id="@+id/ZipcodeLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/checkboxEnableNearbySearch"
+                                android:layout_marginTop="0dp"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/radioButtonZipCode"
+                                    android:layout_width="27dp"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="onZipChanged" />
+
+                                <EditText
+                                    android:id="@+id/editTextZipCode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:hint="Enter Zip Code"
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <!--                    android.layout_below="@id/hiddenLayout"-->
+                    <LinearLayout
+                        android:id="@+id/buttonLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkboxEnableNearbySearch"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonSearch"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#f4511e"
+                            android:onClick="searchFormFunction"
+                            android:text="Search"
+                            android:textColor="#FFFFFF" />
+
+                        <Button
+                            android:id="@+id/buttonClear"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#f4511e"
+                            android:text="Clear"
+                            android:textColor="#FFFFFF" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
