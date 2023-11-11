@@ -19,10 +19,26 @@ import java.util.ArrayList;
 
 public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapter.MyHolder> {
 
+    public void removeItem(int position) {
+        gridArrayLists.remove(position);
+        notifyItemRemoved(position);
+    }
+
 
     private final Context context;
     private  final ArrayList<GridArrayList> gridArrayLists;
     private final LayoutInflater inflater;
+
+    private OnItemClickListener listener;
+
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener){
+        listener = clickListener;
+    }
 
     public GridCustomerAdapter(Context context, ArrayList<GridArrayList> gridArrayLists) {
         this.context = context;
@@ -34,7 +50,7 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.grid_layout_item_list, parent, false);
-        return new MyHolder(view);
+        return new MyHolder(view, listener);
     }
 
 
@@ -51,7 +67,7 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
         holder.conditionView.setText(arrayList.getCondition());
         holder.Price.setText(arrayList.getPrice());
         holder.Shipping.setText(arrayList.getShipping());
-        holder.setClickMethod(position);
+//        holder.setClickMethod(position);
     }
 
     @Override
@@ -69,7 +85,7 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
         private final TextView Price;
 
 
-        public MyHolder(@NonNull View itemView) {
+        public MyHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             conditionView = itemView.findViewById(R.id.condition_text_id);
             imageView = itemView.findViewById(R.id.grid_image_view);
@@ -77,22 +93,17 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
             this.zipView = itemView.findViewById(R.id.zip_text_id);
             Shipping = itemView.findViewById(R.id.shipping_text_id);
             Price = itemView.findViewById(R.id.price_text_id);
-
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(getAdapterPosition());
+                }
+            });
             itemView.findViewById(R.id.cartIdView).setOnClickListener(view -> {
                 gridArrayLists.remove(getAdapterPosition());
 
             });
 
-        }
-
-        public void setClickMethod(int position){
-            textView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    GridArrayList list = gridArrayLists.get(position);
-                    Toast.makeText(context, "Socail Media Name ... "+list.getSocialMediaName(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 }

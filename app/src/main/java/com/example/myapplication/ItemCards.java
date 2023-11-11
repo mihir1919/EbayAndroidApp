@@ -20,58 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemCards extends AppCompatActivity {
-
-//    if (intent != null) {
-//        String jsonString = intent.getStringExtra("jsonObject");
-//
-//        if (jsonString != null) {
-//            JsonArray receivedJsonObjectParent = new Gson().fromJson(jsonString, JsonArray.class);
-//            for(int i=0;i<receivedJsonObjectParent.size();i++){
-//                JsonArray receivedJsonObject = receivedJsonObjectParent.get(i).getAsJsonObject().get("itemJSON").getAsJsonArray();
-//                Log.d("received Objedct", receivedJsonObject.toString());
-//                HashMap<String, String> hashMap = new HashMap<>();
-//                try{
-//                    hashMap.put("keyword",receivedJsonObject.get(0).getAsJsonObject().get("title").getAsJsonArray().get(0).getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("keyword", "N/A");
-//                }
-//                try{
-//                    hashMap.put("zipcode",receivedJsonObject.get(0).getAsJsonObject().get("postalCode").getAsJsonArray().get(0).getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("zipcode", "N/A");
-//                }
-//                try{
-//                    hashMap.put("shippingInfo",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("shippingInfo", "N/A");
-//                }
-//                try{
-//                    hashMap.put("price",receivedJsonObject.get(0).getAsJsonObject().get("sellingStatus").getAsJsonArray().get(0).getAsJsonObject().get("currentPrice").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("price", "N/A");
-//                }
-//                try{
-//                    hashMap.put("photo",receivedJsonObject.get(0).getAsJsonObject().get("galleryURL").getAsJsonArray().get(0).getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("photo", "N/A");
-//                }
-//                try{
-//                    hashMap.put("condition",receivedJsonObject.get(0).getAsJsonObject().get("condition").getAsJsonArray().get(0).getAsJsonObject().get("conditionDisplayName").getAsJsonArray().get(0).getAsString());
-//                }
-//                catch (Exception e){
-//                    hashMap.put("condition", "N/A");
-//                }
-//                listOfArrayLists.add(hashMap);
-//            }
-//
-//        }
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,9 +145,16 @@ public class ItemCards extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new GridCustomerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                adapter.removeItem(position);
+            }
+        });
+
     }
 
-    public void addToWishlist(View V){
-//        finish();
-    }
+//    public void addToWishlist(View V){
+////        finish();
+//    }
 }
