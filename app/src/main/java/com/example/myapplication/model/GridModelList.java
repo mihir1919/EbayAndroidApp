@@ -12,7 +12,7 @@ public class GridModelList {
 
         for (int i = 0; i < listOfArrayLists.size(); i++) {
 //            list.add(new GridArrayList(R.drawable.shopping, listOfArrayLists.get(i).get("keyword"), listOfArrayLists.get(i).get("zipcode"), listOfArrayLists.get(i).get("price"), listOfArrayLists.get(i).get("condition"), listOfArrayLists.get(i).get("shippingInfo")));
-            list.add(new GridArrayList(listOfArrayLists.get(i).get("photo"), listOfArrayLists.get(i).get("keyword"), listOfArrayLists.get(i).get("zipcode"), listOfArrayLists.get(i).get("price"), listOfArrayLists.get(i).get("condition"), listOfArrayLists.get(i).get("shippingInfo")));
+            list.add(new GridArrayList(listOfArrayLists.get(i).get("photo"), listOfArrayLists.get(i).get("keyword"), listOfArrayLists.get(i).get("zipcode"), listOfArrayLists.get(i).get("price"), listOfArrayLists.get(i).get("condition"), listOfArrayLists.get(i).get("shippingInfo"), listOfArrayLists.get(i).get("isInWishlist"), listOfArrayLists.get(i).get("CurrentlyInWishlistSection"),listOfArrayLists.get(i).get("itemId"), listOfArrayLists.get(i).get("details")));
         }
         return list;
     }

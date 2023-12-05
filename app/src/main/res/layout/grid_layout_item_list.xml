@@ -83,7 +83,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/cart_plus"
+                        android:visibility="visible"
                         android:contentDescription="Cart Icon" />
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/cartNotIdView"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:src="@drawable/cart_off"-->
+<!--                            android:visibility="invisible"-->
+<!--                            android:contentDescription="Cart Icon" />-->
                     </LinearLayout>
 
                     <TextView

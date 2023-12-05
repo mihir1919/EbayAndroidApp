@@ -225,12 +225,60 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        HashMap<String, Boolean> wishListMap = new HashMap<>();
+
+
         if (baseUrl != null && baseUrl.charAt(baseUrl.length() - 1) == '&') {
             baseUrl = baseUrl.substring(0, baseUrl.length() -1);
         }
 //        baseUrl += "outputSelector(0)=SellerInfo&outputSelector(1)=StoreInfo";
         Log.d("your base url", baseUrl);
-        loadDogImage(baseUrl.toString());
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
+        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getWishlistItem/";
+        Log.d("wishlist URL resp",url);
+        String finalBaseUrl = baseUrl;
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                (Response.Listener<JSONArray>) response -> {
+                    String dogImageUrl;
+                    try {
+                        Log.d("finalAbax", String.valueOf(response));
+                        JsonArray jobj = new Gson().fromJson(String.valueOf(response), JsonArray.class);
+                        jsonFromURL = String.valueOf(response);
+                        try{
+                            for(int i=0;i<jobj.size();i++){
+                                try{
+                                    wishListMap.put(jobj.get(i).getAsJsonObject().get("itemId").getAsString(), true);
+                                    Log.d("wishlistMapItem",jobj.get(i).getAsJsonObject().get("itemId").getAsString());
+                                }
+                                catch (Exception e){
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            Log.d("exception in count", e.toString());
+                        }
+                        Log.d("mapppper",wishListMap.toString());
+                        loadDogImage(finalBaseUrl.toString(), wishListMap);
+                    } catch (Exception e) {
+                        Log.d("fucking error", e.toString());
+                    }
+                },
+
+                (Response.ErrorListener) error -> {
+                    Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", error.toString());
+                }
+        );
+
+        // add the json request object created above
+        // to the Volley request queue
+        volleyQueue.add(jsonObjectRequest);
+
+
 
 //        JsonObject jobj = new Gson().fromJson(jsonFromURL, JsonObject.class);
 //        try{
@@ -308,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void loadDogImage(String requestURl) {
+    private void loadDogImage(String requestURl, HashMap<String, Boolean> wishlistMap) {
 
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
@@ -339,42 +387,10 @@ public class MainActivity extends AppCompatActivity {
                         JsonObject jobj = new Gson().fromJson(String.valueOf(response), JsonObject.class);
                         jsonFromURL = String.valueOf(response);
                         try{
-
-//                                            {
-//                                                "findItemsAdvancedResponse": [
-//                                                {
-//                                                    "ack": [
-//                                                    "Success"
-//                            ],
-//                                                    "version": [
-//                                                    "1.13.0"
-//                            ],
-//                                                    "timestamp": [
-//                                                    "2023-11-10T20:23:07.660Z"
-//                            ],
-//                                                    "searchResult": [
-//                                                    {
-//                                                        "@count": "31",
-//                                                            "item": [
-
-//                            [
-//                            {
-//                                "_id": "654d3f021024ec7f873208a9",
-//                                    "itemId": "305259437470",
-//                                    "itemJSON": [
-//                                {
-//                                    "itemId": [
-//                                    "305259437470"
-//                ],
-//                                    "title": [
-//                                    "Apple iPhone 13 Pro - 256GB - Graphite (Unlocked) (MUST READ DESCRIPTION) #34517"
-//                ],
-//                                    "globalId": [
-
-//                            Log.d("objectcount",
                             Intent intent = new Intent(this, ItemCards.class);
                             intent.putExtra("jsonObject", jobj.get("findItemsAdvancedResponse").getAsJsonArray().get(0).getAsJsonObject().get("searchResult").getAsJsonArray().get(0).getAsJsonObject().get("item").getAsJsonArray().toString());
                             intent.putExtra("isWishlist", "false");
+                            intent.putExtra("wishlistMap",wishlistMap);
                             startActivity(intent);
                         }
                         catch (Exception e) {
