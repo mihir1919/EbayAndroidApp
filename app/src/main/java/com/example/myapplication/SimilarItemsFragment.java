@@ -16,9 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.model.YourItemModel;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SimilarItemsFragment extends Fragment {
@@ -30,21 +35,43 @@ public class SimilarItemsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_similar, container, false);
+        Bundle args = getArguments();
+
         recyclerView = view.findViewById(R.id.recyclerViewSimilarItems);
 
         // Initialize your item list (Replace this with your data retrieval logic)
         List<YourItemModel> itemList = new ArrayList<>();
-        for (int i = 1; i <= 20; i++) {
-            // Creating dummy data for each item
-            YourItemModel item = new YourItemModel(
-                    "Product " + i,
-                    "$" + (i * 5),
-                    i + " days left",
-                    "Zip " + i,
-                    "https://picsum.photos/200"
-            );
-            itemList.add(item);
+
+        try{
+            String stringFromArgs = args.get("jsonObjectStringSimilar").toString();
+            JsonObject receivedJsonObject = new Gson().fromJson(String.valueOf(stringFromArgs), JsonObject.class);
+            JsonArray arr = receivedJsonObject.get("getSimilarItemsResponse").getAsJsonObject().get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray();
+            // Initialize your item list (Replace this with your data retrieval logic)
+            for (int i = 0; i < arr.size(); i++) {
+                YourItemModel item = new YourItemModel(
+                        "Product " + arr.get(i).getAsJsonObject().get("title").getAsString(),
+                        "$" + arr.get(i).getAsJsonObject().get("shippingCost").getAsJsonObject().get("__value__").getAsString(),
+                        arr.get(i).getAsJsonObject().get("timeLeft").getAsString() + " days left",
+                        "$" + arr.get(i).getAsJsonObject().get("buyItNowPrice").getAsJsonObject().get("__value__").getAsString(),
+                        arr.get(i).getAsJsonObject().get("imageURL").getAsString()
+                );
+                itemList.add(item);
+            }
         }
+        catch (Exception e){
+            for (int i = 1; i <= 20; i++) {
+                // Creating dummy data for each item
+                YourItemModel item = new YourItemModel(
+                        "Product " + i,
+                        "$" + (i * 5),
+                        i + " days left",
+                        "Zip " + i,
+                        "https://picsum.photos/200"
+                );
+                itemList.add(item);
+            }
+        }
+
 
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(itemList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -62,6 +89,94 @@ public class SimilarItemsFragment extends Fragment {
                     spinnerSortOrder.setEnabled(false);
                 } else {
                     spinnerSortOrder.setEnabled(true);
+                    if (itemList != null && itemList.size() > 0) {
+                        if(position == 1){
+                            try{
+                                String stringFromArgs = args.get("jsonObjectStringSimilar").toString();
+                                JsonObject receivedJsonObject = new Gson().fromJson(String.valueOf(stringFromArgs), JsonObject.class);
+                                JsonArray arr = receivedJsonObject.get("getSimilarItemsResponse").getAsJsonObject().get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray();
+                                // Initialize your item list (Replace this with your data retrieval logic)
+                                for (int i = 0; i < arr.size(); i++) {
+                                    YourItemModel item = new YourItemModel(
+                                            "Product " + arr.get(i).getAsJsonObject().get("title").getAsString(),
+                                            "$" + arr.get(i).getAsJsonObject().get("shippingCost").getAsJsonObject().get("__value__").getAsString(),
+                                            arr.get(i).getAsJsonObject().get("timeLeft").getAsString() + " days left",
+                                            "$" + arr.get(i).getAsJsonObject().get("buyItNowPrice").getAsJsonObject().get("__value__").getAsString(),
+                                            arr.get(i).getAsJsonObject().get("imageURL").getAsString()
+                                    );
+                                    itemList.add(item);
+                                }
+                            }
+                            catch (Exception e){
+                                for (int i = 1; i <= 20; i++) {
+                                    // Creating dummy data for each item
+                                    YourItemModel item = new YourItemModel(
+                                            "Product " + i,
+                                            "$" + (i * 5),
+                                            i + " days left",
+                                            "Zip " + i,
+                                            "https://picsum.photos/200"
+                                    );
+                                    itemList.add(item);
+                                }
+                            }
+                        }
+                        else if(position == 2){
+                            if(spinnerSortOrder.getSelectedItem() == "Ascending") {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o1.getTitle().compareTo(o2.getTitle());
+                                    }
+                                });
+                            }
+                            else {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o1.getTitle().compareTo(o2.getTitle());
+                                    }
+                                });
+                            }
+                        }
+                        else if(position == 3){
+                            if(spinnerSortOrder.getSelectedItem() == "Ascending") {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o1.getPrice().compareTo(o2.getPrice());
+                                    }
+                                });
+                            }
+                            else {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o2.getPrice().compareTo(o1.getPrice());
+                                    }
+                                });
+                            }
+                        }
+                        else{
+                            if(spinnerSortOrder.getSelectedItem() == "Ascending") {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o1.getTimeLeft().compareTo(o2.getTimeLeft());
+                                    }
+                                });
+                            }
+                            else {
+                                Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                    @Override
+                                    public int compare(YourItemModel o1, YourItemModel o2) {
+                                        return o2.getTimeLeft().compareTo(o1.getTimeLeft());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
 
@@ -70,6 +185,85 @@ public class SimilarItemsFragment extends Fragment {
                 // Handle nothing selected if needed
             }
         });
+
+
+        spinnerSortOrder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Enable/disable second spinner based on selection in the first spinner
+                if (position == 0) { // "Default" selected
+                    spinnerSortOrder.setEnabled(false);
+                } else {
+                    spinnerSortOrder.setEnabled(true);
+                    if (itemList != null && itemList.size() > 0) {
+                        if(position == 1){
+                            try{
+                                String stringFromArgs = args.get("jsonObjectStringSimilar").toString();
+                                JsonObject receivedJsonObject = new Gson().fromJson(String.valueOf(stringFromArgs), JsonObject.class);
+                                JsonArray arr = receivedJsonObject.get("getSimilarItemsResponse").getAsJsonObject().get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray();
+                                // Initialize your item list (Replace this with your data retrieval logic)
+                                for (int i = 0; i < arr.size(); i++) {
+                                    YourItemModel item = new YourItemModel(
+                                            "Product " + arr.get(i).getAsJsonObject().get("title").getAsString(),
+                                            "$" + arr.get(i).getAsJsonObject().get("shippingCost").getAsJsonObject().get("__value__").getAsString(),
+                                            arr.get(i).getAsJsonObject().get("timeLeft").getAsString() + " days left",
+                                            "$" + arr.get(i).getAsJsonObject().get("buyItNowPrice").getAsJsonObject().get("__value__").getAsString(),
+                                            arr.get(i).getAsJsonObject().get("imageURL").getAsString()
+                                    );
+                                    itemList.add(item);
+                                }
+                            }
+                            catch (Exception e){
+                                for (int i = 1; i <= 20; i++) {
+                                    // Creating dummy data for each item
+                                    YourItemModel item = new YourItemModel(
+                                            "Product " + i,
+                                            "$" + (i * 5),
+                                            i + " days left",
+                                            "Zip " + i,
+                                            "https://picsum.photos/200"
+                                    );
+                                    itemList.add(item);
+                                }
+                            }
+                        }
+                        else if(position == 2){
+                            Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                @Override
+                                public int compare(YourItemModel o1, YourItemModel o2) {
+                                    return o1.getTitle().compareTo(o2.getTitle());
+                                }
+                            });
+                        }
+                        else if(position == 3){
+                            Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                @Override
+                                public int compare(YourItemModel o1, YourItemModel o2) {
+                                    return o1.getPrice().compareTo(o2.getPrice());
+                                }
+                            });
+                        }
+                        else{
+                            Collections.sort(itemList, new Comparator<YourItemModel>() {
+                                @Override
+                                public int compare(YourItemModel o1, YourItemModel o2) {
+                                    return o1.getTitle().compareTo(o2.getTitle());
+                                }
+                            });
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle nothing selected if needed
+            }
+        });
+
+
+
 
         return view;
     }

@@ -43,7 +43,6 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
         notifyItemRemoved(position);
     }
 
-
     private final Context context;
     private  final ArrayList<GridArrayList> gridArrayLists;
     private final LayoutInflater inflater;

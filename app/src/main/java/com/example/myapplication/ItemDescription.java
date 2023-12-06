@@ -30,6 +30,10 @@ import com.google.gson.JsonObject;
 import org.json.JSONObject;
 
 public class ItemDescription extends AppCompatActivity {
+
+
+    String similarVal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,39 +73,45 @@ public class ItemDescription extends AppCompatActivity {
 
         vpAdapter.addFragment(new PhotoFragment(), tab3, bundle);
 
+        try{
+            RequestQueue queue = Volley.newRequestQueue(this);
+        // Define the URL for the GET request
+            String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/374707336304";
+            // Create a JsonObjectRequest
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JsonObject gsonJsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+                                bundle.putString("jsonObjectStringSimilar", gsonJsonObject.toString());
+                                Log.d( "Gson JsonObject: " , gsonJsonObject.toString());
+                            } catch (Exception e) {
+                                Log.e( "Error parsing JSON to Gson JsonObject: " , e.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Error occurred during the request
+                    Log.e("Volley Error: " , error.toString());
+                }
+            });
 
 
-//        RequestQueue queue = Volley.newRequestQueue(this);
+
+            vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
+            // Add the request to the RequestQueue
+            queue.add(jsonObjectRequest);
+        }
+        catch (Exception e){
+            Log.d("errorrr", e.toString());
+        }
 //
-//        // Define the URL for the GET request
-//        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/374707336304";
-//
-//        // Create a JsonObjectRequest
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            JsonObject gsonJsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
-//                            bundle.putString("jsonObjectStringSimilar", gsonJsonObject.toString());
-//                            vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
-//                            Log.d( "Gson JsonObject: " , gsonJsonObject.toString());
-//                        } catch (Exception e) {
-//                            Log.e( "Error parsing JSON to Gson JsonObject: " , e.toString());
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                // Error occurred during the request
-//                Log.e("Volley Error: " , error.toString());
-//            }
-//        });
-//
-//        // Add the request to the RequestQueue
-//        queue.add(jsonObjectRequest);
-        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, new Bundle());
+//        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, new Bundle());
 //        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
+//        bundle.putString("jsonObjectStringSimilar", gsonJsonObject.toString());
+        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
         viewPager.setAdapter(vpAdapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
