@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,63 +17,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 public class ItemDescription extends AppCompatActivity {
-//
-//    private LinearLayout tabLayout;
-//    private ViewPager2 viewPager;
-//
-//    private TabLayout tb;
-
     @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_item_description);
-//        ImageView backButton = findViewById(R.id.backButton2);
-//
-//        tabLayout = findViewById(R.id.topRow2);
-//
-//        viewPager = findViewById(R.id.viewPagerIDDesc);
-//
-//        tb = findViewById(R.id.tabsLayout);
-//        VPAdapter vpAdapter = null;
-//        viewPager.setAdapter(vpAdapter);
-//
-//
-//        VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-//        vpAdapter.addFragment(new ProductFragment(),"CHATS");
-//        vpAdapter.addFragment(new PhotoFragment(), "STATUS");
-//        vpAdapter.addFragment(new ProductFragment(),"CHATS");
-//        vpAdapter.addFragment(new PhotoFragment(), "STATUS");
-//
-//        TabLayout.Tab tab = tb.getTabAt(0);
-//        if (tab != null) {
-//            tab.setIcon(R.drawable.information_variant);
-//        }
-//        TabLayout.Tab tab2 = tb.getTabAt(1);
-//        if (tab2 != null) {
-//            tab2.setIcon(R.drawable.truck_delivery);
-//        }
-//        TabLayout.Tab tab3 = tb.getTabAt(2);
-//        if (tab3 != null) {
-//            tab3.setIcon(R.drawable.google);
-//        }
-//        TabLayout.Tab tab4 = tb.getTabAt(3);
-//        if (tab4 != null) {
-//            tab4.setIcon(R.drawable.equal);
-//        }
-//
-//        viewPager.setAdapter(vpAdapter);
-//
-//        backButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_description);
@@ -83,10 +41,6 @@ public class ItemDescription extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabsLayout);
 
         VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-//        vpAdapter.addFragment(new ProductFragment(), "CHATS");
-//        vpAdapter.addFragment(new PhotoFragment(), "STATUS");
-//        vpAdapter.addFragment(new ProductFragment(), "CHATS");
-//        vpAdapter.addFragment(new PhotoFragment(), "STATUS");
 
         TabLayout.Tab tab1 = tabLayout.newTab();
         tab1.setIcon(R.drawable.information_variant);
@@ -108,15 +62,46 @@ public class ItemDescription extends AppCompatActivity {
         tab4.setText("Similar");
         tabLayout.addTab(tab4);
         Bundle bundle = getIntent().getExtras();
+
         vpAdapter.addFragment(new ProductFragment(), tab1, bundle);
 
         vpAdapter.addFragment(new ShippingFragment(), tab2, bundle);
 
         vpAdapter.addFragment(new PhotoFragment(), tab3, bundle);
 
-        vpAdapter.addFragment(new PhotoFragment(), tab4, bundle);
 
 
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//
+//        // Define the URL for the GET request
+//        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/374707336304";
+//
+//        // Create a JsonObjectRequest
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            JsonObject gsonJsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
+//                            bundle.putString("jsonObjectStringSimilar", gsonJsonObject.toString());
+//                            vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
+//                            Log.d( "Gson JsonObject: " , gsonJsonObject.toString());
+//                        } catch (Exception e) {
+//                            Log.e( "Error parsing JSON to Gson JsonObject: " , e.toString());
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                // Error occurred during the request
+//                Log.e("Volley Error: " , error.toString());
+//            }
+//        });
+//
+//        // Add the request to the RequestQueue
+//        queue.add(jsonObjectRequest);
+        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, new Bundle());
+//        vpAdapter.addFragment(new SimilarItemsFragment(), tab4, bundle);
         viewPager.setAdapter(vpAdapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -154,33 +139,6 @@ public class ItemDescription extends AppCompatActivity {
             }
         });
 
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                // Define your icon changes when a tab is selected
-//                // For instance, change the icon when the tab is selected
-//                switch (tab.getPosition()) {
-//                    case 0:
-//                        tab.setIcon(R.drawable.equal);
-//                        break;
-//                    case 1:
-//                        tab.setIcon(R.drawable.truck_delivery);
-//                        break;
-//                    // Add cases for other tabs if needed
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                // Clear the icon when the tab is unselected
-//                tab.setIcon(null);
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                // React to a tab being reselected (if needed)
-//            }
-//        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
