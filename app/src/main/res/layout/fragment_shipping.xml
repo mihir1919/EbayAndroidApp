@@ -29,17 +29,31 @@
                         android:id="@+id/topRow5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="0dp"
                         android:background="@color/white"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="55dp"
-                            android:layout_weight="1"
-                            android:scrollbarSize="4dp"
-                            android:text="Sold By"
-                            android:textSize="24sp" />
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:src="@drawable/truck"></ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="55dp"
+                                android:layout_weight="1"
+                                android:padding="10dp"
+                                android:scrollbarSize="4dp"
+                                android:text="Sold By"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -53,15 +67,44 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Store Name"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
+<!--                            <TextView-->
+<!--                                android:id="@+id/TV1Titless"-->
+<!--                                android:layout_width="73dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:ellipsize="marquee"-->
+<!--                                android:marqueeRepeatLimit="marquee_forever"-->
+<!--                                android:scrollHorizontally="true"-->
+<!--                                android:singleLine="true"-->
+<!--                                android:text="Your long text here that will be truncated with ellipsis."-->
+<!--                                android:textColor="#757575"-->
+<!--                                android:textSize="19sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/TV1Titless"-->
+<!--                                android:layout_width="185dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:ellipsize="marquee"-->
+<!--                                android:marqueeRepeatLimit="marquee_forever"-->
+<!--                                android:scrollHorizontally="true"-->
+<!--                                android:singleLine="true"-->
+<!--                                android:text="Hello guys !! Welcome to GeeksforGeeks Portal !!"-->
+<!--                                android:textSize="20sp" />-->
                             <TextView
-                                android:id="@+id/TV1"
-                                android:layout_width="73dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="24sp" />
+                                android:id="@+id/TV1Titless"
+                                android:layout_width="185dp"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:fadingEdge="horizontal"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:text="Hello guys !! Welcome to GeeksforGeeks Portal !!"
+                                android:textColor="#977ACC"
+                                android:textSize="20sp" />
 
                         </LinearLayout>
 
@@ -78,7 +121,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Feedback Score"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV2"
@@ -86,9 +130,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -99,22 +145,66 @@
 
                             <TextView
                                 android:id="@+id/textView17"
-                                android:layout_width="73dp"
+                                android:layout_width="185dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
                                 android:text="Popularity"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
-                            <TextView
-                                android:id="@+id/TV3"
-                                android:layout_width="73dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="24sp" />
+<!--                            <ProgressBar-->
+<!--                                android:id="@+id/progress_bar"-->
+<!--                                android:layout_width="20dp"-->
+<!--                                android:layout_height="20dp"-->
+<!--                                android:indeterminateOnly="false"-->
+<!--                                android:progressDrawable="@drawable/circle"-->
+<!--                            <ProgressBar-->
+<!--                                android:id="@+id/circularProgressBar"-->
+<!--                                style="?android:attr/progressBarStyleHorizontal"-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="40dp"-->
+<!--                                android:max="100"-->
+<!--                                android:progress="52"-->
+<!--                                android:indeterminate="false"-->
+<!--                                android:progressDrawable="@drawable/circular_progress_drawable" />-->
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ProgressBar
+                                    android:id="@+id/circularProgressBar"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:max="100"
+                                    android:progress="52"
+                                    android:indeterminate="false"
+                                    android:progressDrawable="@drawable/circular_progress_drawable" />
+
+                                <TextView
+                                    android:id="@+id/percentageID"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center_vertical"
+                                    android:text="52%"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+
+
+                            <!--                            <TextView-->
+<!--                                android:id="@+id/TV4"-->
+<!--                                android:layout_width="73dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:text="TextView"-->
+<!--                                android:textColor="#757575"-->
+<!--                                android:textSize="16sp" />-->
+
 
                         </LinearLayout>
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -124,25 +214,47 @@
 
                             <TextView
                                 android:id="@+id/textView17"
-                                android:layout_width="73dp"
+                                android:layout_width="70dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Feedback Star"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
-                            <TextView
-                                android:id="@+id/TV4"
-                                android:layout_width="73dp"
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/TV3"-->
+                            <!--                                android:layout_width="73dp"-->
+                            <!--                                android:layout_height="match_parent"-->
+                            <!--                                android:layout_weight="1"-->
+                            <!--                                android:text="TextView"-->
+                            <!--                                android:textColor="#757575"-->
+                            <!--                                android:textSize="16sp" />-->
+                            <LinearLayout
+                                android:layout_width="185dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="24sp" />
+
+                                >
+
+                                <ImageView
+                                    android:id="@+id/IVStar"
+                                    android:layout_width="38dp"
+                                    android:layout_height="42dp"
+                                    android:layout_gravity="start|center_vertical"
+                                    android:src="@drawable/star_circle"></ImageView>
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
+
 
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,22 +268,36 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:padding="10dp"
                         android:id="@+id/topRow3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="0dp"
                         android:background="@color/white"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ferry"
+                                android:padding="10dp"
+                                ></ImageView>
+
+
+                            <TextView
                             android:id="@+id/textView13"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
                             android:layout_weight="1"
                             android:scrollbarSize="4dp"
-                            android:text="Sold By"
-                            android:textSize="24sp" />
-
+                            android:text="Shipping Info"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -185,7 +311,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Shipping Cost"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV5"
@@ -193,7 +320,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -210,7 +338,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Global Shipping"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV6"
@@ -218,7 +347,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -226,7 +356,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:minHeight="55dp"
+                            android:minHeight="45dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -235,26 +365,36 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Handling Time"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV7"
-                                android:layout_width="73dp"
+                                android:layout_width="187dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="24sp" />
+                                android:text="Your long text goes here"
+                                android:textColor="#757575"
+                                android:textSize="16sp"
+                                android:maxWidth="73dp"
+                                android:maxLines="1"
+                                android:ellipsize="end" />
+
 
                         </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="245dp"
                 android:orientation="horizontal">
+
 
                 <LinearLayout
                     android:id="@+id/verticalLayout"
@@ -263,22 +403,36 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:padding="10dp"
                         android:id="@+id/topRow3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="0dp"
                         android:background="@color/white"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/dump_truck"
+                                android:padding="10dp"
+                                ></ImageView>
+
+
+                            <TextView
                             android:id="@+id/textView13"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
                             android:layout_weight="1"
                             android:scrollbarSize="4dp"
                             android:text="Return Policy"
-                            android:textSize="24sp" />
-
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -292,15 +446,17 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Policy"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
-                                android:id="@+id/TV8"
+                                android:id="@+id/TV997"
                                 android:layout_width="73dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -316,8 +472,9 @@
                                 android:layout_width="73dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="Refund "
-                                android:textSize="24sp" />
+                                android:text="Returns within"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV8"
@@ -325,7 +482,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -342,15 +500,20 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Refund Mode"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV9"
                                 android:layout_width="73dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="24sp" />
+                                android:text="Your long text goes here"
+                                android:textColor="#757575"
+                                android:textSize="16sp"
+                                android:maxLines="1"
+                                android:ellipsize="end" />
+
 
                         </LinearLayout>
 
@@ -367,7 +530,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="Shipped By"
-                                android:textSize="24sp" />
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/TV10"
@@ -375,7 +539,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="TextView"
-                                android:textSize="24sp" />
+                                android:textColor="#757575"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 

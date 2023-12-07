@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -73,6 +76,26 @@ public class ItemDescription extends AppCompatActivity {
 
         vpAdapter.addFragment(new PhotoFragment(), tab3, bundle);
 
+        ImageView fbView = findViewById(R.id.imageView6);
+        try{
+            fbView.setOnClickListener(view -> {
+                JsonObject gsonJsonObjectFB = new Gson().fromJson(bundle.get("jsonObject").toString(), JsonObject.class);
+
+                String facebookShareLink = "";
+                try{
+                    facebookShareLink = "https://www.facebook.com/sharer/sharer.php?u="+ gsonJsonObjectFB.get("Item").getAsJsonObject().get("ViewItemURLForNaturalSearch").getAsString() +"&amp;src=sdkpreparse";
+                }
+                catch (Exception e){
+
+                }
+                Log.d("fblink", facebookShareLink);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookShareLink));
+                startActivity(intent);
+            });
+        }
+        catch (Exception e){
+
+        }
         try{
             RequestQueue queue = Volley.newRequestQueue(this);
         // Define the URL for the GET request
@@ -85,7 +108,9 @@ public class ItemDescription extends AppCompatActivity {
                             try {
                                 JsonObject gsonJsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
                                 bundle.putString("jsonObjectStringSimilar", gsonJsonObject.toString());
-                                Log.d( "Gson JsonObject: " , gsonJsonObject.toString());
+                                TextView titleViewText = findViewById(R.id.titleText2Title);
+                                titleViewText.setText(gsonJsonObject.get("getSimilarItemsResponse").getAsJsonObject().get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray().get(0).getAsJsonObject().get("title").getAsString());
+                                Log.d( "Gson JsonObject OGOG: " , gsonJsonObject.toString());
                             } catch (Exception e) {
                                 Log.e( "Error parsing JSON to Gson JsonObject: " , e.toString());
                             }

@@ -251,12 +251,12 @@ public class ItemCards extends AppCompatActivity {
         adapter.setOnItemClickListener(new GridCustomerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                loadSingleItem(listOfArrayLists.get(position).get("itemId"));
+                loadSingleItem(listOfArrayLists.get(position).get("itemId"),listOfArrayLists.get(position).get("shippingInfo"));
             }
         });
     }
 
-    public void loadSingleItem(String position) {
+    public void loadSingleItem(String position, String shipping) {
 
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
@@ -283,11 +283,23 @@ public class ItemCards extends AppCompatActivity {
                     String dogImageUrl;
                     try {
 //                        dogImageUrl = response.getString("message");
-                        Log.d("finalAbax", String.valueOf(response));
                         JsonObject jobj = new Gson().fromJson(String.valueOf(response), JsonObject.class);
+//
+//                        String titleOfObj = "N/A";
+//
+//                        try{
+//                            titleOfObj = jobj.get("Item").getAsJsonObject().get("Title").getAsString();
+//                        }
+//                        catch (Exception e){
+//
+//                        }
+
                         try{
                             Intent intent2 = new Intent(this, ItemDescription.class);
                             intent2.putExtra("jsonObject", jobj.get("Item").getAsJsonObject().toString());
+                            intent2.putExtra("shippingInfo", shipping);
+                            TextView tx =  findViewById(R.id.titleText2Title);
+//                            tx.setText(jobj.get(0).getAsJsonArray().);
                             startActivity(intent2);
                         }
                         catch (Exception e) {

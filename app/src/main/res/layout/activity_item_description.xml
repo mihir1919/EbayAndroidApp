@@ -34,12 +34,13 @@
         android:src="@drawable/arrow_left" />
 
     <TextView
-        android:id="@+id/titleText2"
+        android:id="@+id/titleText2Title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center"
+        android:maxWidth="200dp"
         android:maxLines="1"
         android:text="Your Title Here (Up to 35 characters)"
         android:textColor="#FFFFFF" />
