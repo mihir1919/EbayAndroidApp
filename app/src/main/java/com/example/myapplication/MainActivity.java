@@ -7,15 +7,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,6 +39,7 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -51,10 +59,34 @@ public class MainActivity extends AppCompatActivity {
 
     String jsonFromURL = null;
 
+    private AutoCompleteTextView autoCompleteTextView;
+    private TextView resultTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Autocomplete
+
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+
+        String[] suggestions = {"90210",
+                "90002",
+                "90003",
+                "90004",
+                "90006",
+                "90001"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, suggestions);
+        autoCompleteTextView.setAdapter(adapter);
+
+        autoCompleteTextView.setDropDownHeight(getResources().getDimensionPixelSize(R.dimen.dropdown_height));
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            // Handle item click if needed
+        });
+        //End
+
         CheckBox checkboxEnableNearbySearch = findViewById(R.id.checkboxEnableNearbySearch);
         LinearLayout buttonLinearLayout = findViewById(R.id.buttonLinearLayout);
         LinearLayout hiddenLayout = findViewById(R.id.hiddenLayout);
@@ -89,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void displayTextFiveTimes(String text) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            result.append(text).append("\n");
+        }
+        resultTextView.setText(result.toString());
+    }
+
     public void onZipChanged(View V) {
         RadioButton currentLoc = (RadioButton) findViewById(R.id.radioButtonCurrentLocation);
         RadioButton zipLoc = (RadioButton) findViewById(R.id.radioButtonZipCode);
@@ -104,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d(currentLoc.isChecked());
     }
 
+
+
     public void searchFormFunction(View V) throws IOException, JSONException {
 
 
@@ -112,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
         categoryMap.put("Art", "550");
         categoryMap.put("Baby", "2984");
         categoryMap.put("Books", "267");
-        categoryMap.put("Clothing, Shoes & Accessories", "11450");
-        categoryMap.put("Computers/Tablet & Networking", "58058");
+        categoryMap.put("Clothing, Shoes and Accessories", "11450");
+        categoryMap.put("Computer, Tablets and Network", "58058");
         categoryMap.put("Health & Beauty", "26395");
         categoryMap.put("Music", "11233");
         categoryMap.put("Video Games & Consoles", "1249");
@@ -131,17 +173,68 @@ public class MainActivity extends AppCompatActivity {
         EditText editTextMilesFrom = (EditText) findViewById(R.id.editTextMilesFrom);
         RadioButton radioButtonCurrent = (RadioButton) findViewById(R.id.radioButtonCurrentLocation);
         RadioButton radioButtonZip = (RadioButton) findViewById(R.id.radioButtonZipCode);
-        EditText editTextZipCodeVar = (EditText) findViewById(R.id.editTextZipCode);
+        AutoCompleteTextView editTextZipCodeVar = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 
 //        String baseUrl = "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=VishalVe-prodsc12-PRD-a0eed1ece-c051b032&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&paginationInput.entriesPerPage=50&";
         String baseUrl = "https://ebayreactmihir-2454971216.wl.r.appspot.com/api/";
         if (textViewKeyword != null && textViewKeyword.getText().length() > 0) {
             baseUrl += "keywords=" + textViewKeyword.getText() + "&";
+            TextView errorKeyword = findViewById(R.id.keywordError);
+            errorKeyword.setVisibility(View.INVISIBLE);
+
+            TextView categoryView = findViewById(R.id.titleCategory);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) categoryView.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.BELOW, (R.id.editTextKeyword));
+            categoryView.setLayoutParams(layoutParams);
+
+        }
+        else{
+            TextView errorKeyword = findViewById(R.id.keywordError);
+            errorKeyword.setVisibility(View.VISIBLE);
+
+            TextView categoryView = findViewById(R.id.titleCategory);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) categoryView.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.BELOW, R.id.keywordError);
+            categoryView.setLayoutParams(layoutParams);
+
+            Toast.makeText(MainActivity.this, "Please fill values properly", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        if (categoryMap.containsKey(categoryMap.get(spinner.getSelectedItem().toString()))) {
-            baseUrl += "Category=" + categoryMap.get(categoryMap.get(spinner.getSelectedItem().toString())) + "&";
+
+        try{
+
+            Log.d("hk",spinner.getSelectedItem().toString());
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+                    Log.d("categoory", categoryMap.get(selectedItem));
+                    // Do something with the selected item
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle case where nothing is selected
+                }
+            });
+
         }
+        catch (Exception e){
+            Log.d("what is this", e.toString());
+        }
+
+        try{
+            Log.d("cattss", spinner.getSelectedItem().toString());
+            Log.d("ssttac", categoryMap.get(spinner.getSelectedItem().toString()));
+            if (categoryMap.get(spinner.getSelectedItem().toString())!=null) {
+                baseUrl += "Category=" + categoryMap.get(spinner.getSelectedItem().toString()) + "&";
+            }
+        }
+        catch (Exception e){
+        }
+
 
         int k = 0;
         if ((checkBoxNew != null && checkBoxNew.isChecked()) || (checkboxUsed != null && checkboxUsed.isChecked()) || (checkBoxUnspecified != null && (checkBoxUnspecified.isChecked()))) {
@@ -207,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                                 k +
                                 ").name=MaxDistance&itemFilter(" +
                                 k++ +
-                                ").value=" + Double.parseDouble(editTextMilesFrom.getText().toString());
+                                ").value=" + Integer.parseInt(editTextMilesFrom.getText().toString());
                 baseUrl += "&";
             }
         } catch (Exception e) {
@@ -357,8 +450,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadDogImage(String requestURl, HashMap<String, Boolean> wishlistMap) {
-
-        // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
         // url of the api through which we get random dog images
         String url = requestURl;

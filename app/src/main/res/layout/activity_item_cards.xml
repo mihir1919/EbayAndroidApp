@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
+    <!-- Purple bar with back button and text -->
+    <LinearLayout
+        android:id="@+id/purpleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#673AB7"
+        android:orientation="horizontal"
+        android:padding="18dp">
+
+        <ImageView
+            android:id="@+id/backButtonToSearch"
+            android:layout_width="52dp"
+            android:layout_height="37dp"
+            app:srcCompat="@drawable/arrow_left" />
+
+        <!-- Search Result TextView -->
+        <TextView
+            android:id="@+id/searchResultTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:text="Search Result"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- ProgressBar centered in the layout -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+
+    <!-- RecyclerView below purpleBar -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:context=".ItemCards" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/purpleBar"
+        android:visibility="gone" />
 
+    <!-- TextView sticky to the bottom -->
     <TextView
         android:id="@+id/text_total_value"
         android:layout_width="match_parent"
@@ -22,6 +60,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:text="0.00" />
+        android:text="0.00"
+        android:layout_alignParentBottom="true" />
 
-</LinearLayout>
+</RelativeLayout>

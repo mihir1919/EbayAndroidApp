@@ -17,10 +17,14 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.myapplication.R;
 import com.example.myapplication.model.GridArrayList;
+import com.example.myapplication.model.GridModelList;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.android.volley.Request;
@@ -199,29 +203,151 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
                     // Assuming gridArrayLists is a list of items and details is a JSONObject
 
                     // Create a JSONObject containing the required data
-                    JSONObject postData = new JSONObject();
+                    JSONObject jsonObjectFromString = null;
                     try {
+                        jsonObjectFromString = new JSONObject(gridArrayLists.get(getAdapterPosition()).getDetails());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        // Create your request parameters
+                        JSONArray newTemp = new JSONArray();
+                        JSONObject postData = new JSONObject();
+                        JSONObject temp = new JSONObject();
+                        newTemp.put(jsonObjectFromString);
+                        newTemp.put(0);
+                        temp.put("itemId", gridArrayLists.get(getAdapterPosition()).getItemId()); // Assuming itemId is a variable containing the item ID
+                        temp.put("itemJSON", newTemp); // Assuming details is a JSONObject
+                        postData.put("dataFromPost", temp);
+                        // Create your request
+//                        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/postWishlistItem";
 
-                        JSONObject jsonObjectFromString = new JSONObject(gridArrayLists.get(getAdapterPosition()).getDetails());
-                        postData.put("itemId", gridArrayLists.get(getAdapterPosition()).getItemId()); // Assuming itemId is a variable containing the item ID
-                        postData.put("itemJSON", jsonObjectFromString); // Assuming details is a JSONObject
-                        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/postWishlistItem";
-
+                        String url = "http://192.168.1.114:8080/postWishlistItem";
                         Log.d("postData", postData.toString());
+
+
+
+                        // Construct a custom request to set Content-Type header
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
                                 response -> {
-                                    Log.d("error in posting", response.toString());
+
+                                    try{
+                                        Log.d("posstt", postData.toString());
+                                        Double d = Double.parseDouble(gridArrayLists.get(getAdapterPosition()).getPrice());
+                                        TextView totalShopping =  totalValueTextView;
+                                        totalShopping.setText(String.valueOf(Double.parseDouble(totalShopping.getText().toString())+d));
+
+                                        double totalVal = 0;
+                                        JSONArray js = new JSONArray();
+                                        js.put(postData);
+                                                String jsonString = js.toString();
+                                                if (jsonString != null) {
+                                                    JsonArray receivedJsonObjectParent = new Gson().fromJson(jsonString, JsonArray.class);
+                                                    Log.d("jsonArray", receivedJsonObjectParent.toString());
+                                                    for(int i=0;i<receivedJsonObjectParent.size();i++){
+                                                        JsonArray receivedJsonObject = receivedJsonObjectParent.get(i).getAsJsonObject().get("dataFromPost").getAsJsonObject().get("itemJSON").getAsJsonArray();
+                                                        Log.d("rektt", receivedJsonObject.toString());
+                                                        HashMap<String, String> hashMap = new HashMap<>();
+                                                        try{
+                                                            hashMap.put("itemId",receivedJsonObject.get(0).getAsJsonObject().get("itemId").getAsJsonArray().get(0).getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("itemId", "N/A");
+                                                        }
+
+                                                        try{
+                                                            hashMap.put("keyword",receivedJsonObject.get(0).getAsJsonObject().get("title").getAsJsonArray().get(0).getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("keyword", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("zipcode",receivedJsonObject.get(0).getAsJsonObject().get("postalCode").getAsJsonArray().get(0).getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("zipcode", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("shippingInfo",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("shippingInfo", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("price",receivedJsonObject.get(0).getAsJsonObject().get("sellingStatus").getAsJsonArray().get(0).getAsJsonObject().get("currentPrice").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("price", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("photo",receivedJsonObject.get(0).getAsJsonObject().get("galleryURL").getAsJsonArray().get(0).getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("photo", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("condition",receivedJsonObject.get(0).getAsJsonObject().get("condition").getAsJsonArray().get(0).getAsJsonObject().get("conditionDisplayName").getAsJsonArray().get(0).getAsString());
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("condition", "N/A");
+                                                        }
+                                                        try{
+                                                            hashMap.put("isInWishlist","true");
+                                                        }
+                                                        catch (Exception e){
+                                                            hashMap.put("isInWishlist","true");
+                                                        }
+                                                        try{
+                                                            hashMap.put("CurrentlyInWishlistSection", "true");
+                                                        }
+                                                        catch (Exception e){
+
+                                                        }
+
+                                                        try{
+                                                            if(receivedJsonObject.get(0).getAsJsonObject().get("sellingStatus").getAsJsonArray().get(0).getAsJsonObject().get("currentPrice").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsDouble() > 0){
+                                                                totalVal+=receivedJsonObject.get(0).getAsJsonObject().get("sellingStatus").getAsJsonArray().get(0).getAsJsonObject().get("currentPrice").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsDouble();
+                                                            }
+                                                        }
+                                                        catch(Exception e){
+
+                                                        }
+
+                                                        gridArrayLists.add(new GridArrayList(hashMap.get("photo"), hashMap.get("keyword"), hashMap.get("zipcode"), hashMap.get("price"), hashMap.get("condition"), hashMap.get("shippingInfo"), hashMap.get("isInWishlist"), hashMap.get("CurrentlyInWishlistSection"),hashMap.get("itemId"), hashMap.get("details")));
+                                                    }
+
+                                                }
+                                            Log.d("item wishlist array", gridArrayLists.toString());
+//                                         R.id.cartIdView
+                                        arrayList.setInWishlist("true");
+                                        notifyItemChanged(getAdapterPosition());
+                                    }
+                                    catch (Exception e){
+                                        Log.d("string price", e.toString());
+                                    }
+
+                                    Log.d("response is thiiss", response.toString());
                                 },
                                 error -> {
-                                    Log.d("error in posting", error.toString());
+                                    Log.e("error is thiiss", error.toString());
                                 }
-                        );
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Content-Type", "application/json"); // Add the Content-Type header
+                                return headers;
+                            }
+                        };
 
+                        // Instantiate the RequestQueue and add the request to it
                         RequestQueue requestQueue = Volley.newRequestQueue(context); // 'context' is your activity or application context
                         requestQueue.add(jsonObjectRequest);
+
                     } catch (JSONException e) {
-                        Log.d("error in posting",e.toString());
+                        e.printStackTrace();
                     }
+
 
                 }
             });

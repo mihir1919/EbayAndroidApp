@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +33,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemCards extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_cards);
         Intent intent = getIntent();
+
+        ImageView backBtn = findViewById(R.id.backButtonToSearch);
+        backBtn.setOnClickListener(view -> finish());
+
 
         List<HashMap<String, String>> listOfArrayLists = new ArrayList<>();
         double totalVal = 0;
@@ -61,13 +70,20 @@ public class ItemCards extends AppCompatActivity {
                                 hashMap.put("keyword", "N/A");
                             }
                             try{
-                                hashMap.put("zipcode",receivedJsonObject.get(0).getAsJsonObject().get("postalCode").getAsJsonArray().get(0).getAsString());
+                                hashMap.put("zipcode","Zip:"+receivedJsonObject.get(0).getAsJsonObject().get("postalCode").getAsJsonArray().get(0).getAsString());
                             }
                             catch (Exception e){
                                 hashMap.put("zipcode", "N/A");
                             }
                             try{
-                                hashMap.put("shippingInfo",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+//                                Log.d("recObj",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                                if(receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsDouble()>0.0)
+                                {
+                                    hashMap.put("shippingInfo",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                                }
+                                else{
+                                    hashMap.put("shippingInfo", "Free");
+                                }
                             }
                             catch (Exception e){
                                 hashMap.put("shippingInfo", "N/A");
@@ -150,7 +166,14 @@ public class ItemCards extends AppCompatActivity {
                             hashMap.put("zipcode", "N/A");
                         }
                         try{
-                            hashMap.put("shippingInfo",receivedJsonObject.get(i).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                            if(receivedJsonObject.get(i).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsDouble()>0.0)
+                            {
+                                hashMap.put("shippingInfo",receivedJsonObject.get(i).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+//                                hashMap.put("shippingInfo",receivedJsonObject.get(0).getAsJsonObject().get("shippingInfo").getAsJsonArray().get(0).getAsJsonObject().get("shippingServiceCost").getAsJsonArray().get(0).getAsJsonObject().get("__value__").getAsString());
+                            }
+                            else{
+                                hashMap.put("shippingInfo", "Free");
+                            }
                         }
                         catch (Exception e){
                             hashMap.put("shippingInfo", "N/A");
@@ -201,6 +224,8 @@ public class ItemCards extends AppCompatActivity {
             }
         }
         RecyclerView recyclerView = findViewById(R.id.recycler_view_list);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        recyclerView.setVisibility(View.GONE);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -216,6 +241,12 @@ public class ItemCards extends AppCompatActivity {
         totalShopping.setText(String.valueOf(totalVal));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        new Handler().postDelayed(() -> {
+            // After the delay, hide ProgressBar and show RecyclerView
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }, 2000); // 2000 milliseconds delay (adjust as needed)
 
         adapter.setOnItemClickListener(new GridCustomerAdapter.OnItemClickListener() {
             @Override
