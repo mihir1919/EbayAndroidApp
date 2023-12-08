@@ -1,3 +1,4 @@
 <resources>
     <dimen name="dropdown_height">200dp</dimen>
+    <dimen name="separator_height">2dp</dimen>
 </resources>
