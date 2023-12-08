@@ -77,6 +77,9 @@ public class ItemDescription extends AppCompatActivity {
         vpAdapter.addFragment(new PhotoFragment(), tab3, bundle);
 
         ImageView fbView = findViewById(R.id.imageView6);
+
+
+
         try{
             fbView.setOnClickListener(view -> {
                 JsonObject gsonJsonObjectFB = new Gson().fromJson(bundle.get("jsonObject").toString(), JsonObject.class);
@@ -99,7 +102,17 @@ public class ItemDescription extends AppCompatActivity {
         try{
             RequestQueue queue = Volley.newRequestQueue(this);
         // Define the URL for the GET request
-            String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/374707336304";
+            JsonObject gsonJsonObjectFB = new Gson().fromJson(bundle.get("jsonObject").toString(), JsonObject.class);
+            Log.d("urlllll1", gsonJsonObjectFB.toString());
+            try{
+                Log.d("rsr",gsonJsonObjectFB.get("ItemID").getAsString());
+            }
+            catch (Exception e){
+
+            }
+//            String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/"+gsonJsonObjectFB.get("ItemID").getAsString();
+            String url = "https://fastly.picsum.photos/id/361/200/200.jpg";
+//            Log.d("urlBHA", gsonJsonObjectFB.get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray().get(0).getAsJsonObject().get("ItemID").getAsString());
             // Create a JsonObjectRequest
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {

@@ -308,29 +308,32 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/checkboxEnableNearbySearch"
                             android:layout_marginTop="16dp"
+                            android:layout_margin="16dp"
                             android:orientation="horizontal">
+
 
                             <Button
                                 android:id="@+id/buttonSearch"
-                                style="@style/Widget.AppCompat.Button.Colored"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:backgroundTint="#f4511e"
                                 android:onClick="searchFormFunction"
                                 android:text="Search"
-                                android:textColor="#FFFFFF" />
+                                android:textColor="#FFFFFF"
+                                app:cornerRadius="0dp" />
 
                             <Button
                                 android:id="@+id/buttonClear"
-                                style="@style/Widget.AppCompat.Button.Colored"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_weight="1"
                                 android:backgroundTint="#f4511e"
                                 android:text="Clear"
-                                android:textColor="#FFFFFF" />
+                                android:textColor="#FFFFFF"
+                                app:cornerRadius="0dp" />
+
                         </LinearLayout>
 
                         <!--                    <TextView-->
