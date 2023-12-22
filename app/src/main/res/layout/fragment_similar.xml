@@ -1,5 +1,9 @@
 <!-- fragment_similar.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -34,4 +38,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"/>
+
+
+
 </LinearLayout>
+    <FrameLayout
+        android:id="@+id/cartInDesc4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/circle_background"
+        android:backgroundTint="#F44336">
+
+        <!-- Circular background for the image -->
+        <ImageView
+            android:id="@+id/idCartImg4"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#FF9800"
+            android:padding="12dp"
+            android:src="@drawable/cart_plus" />
+
+    </FrameLayout>
+</RelativeLayout>

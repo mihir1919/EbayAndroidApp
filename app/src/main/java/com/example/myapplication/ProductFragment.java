@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +37,58 @@ public class ProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product, container, false);
 
         Bundle args = getArguments();
+        try{
+
+            FrameLayout cart = view.findViewById(R.id.cartInDesc);
+            try {
+                HashMap<String, Boolean> wishlistMap = (HashMap<String, Boolean>) args.getSerializable("wishlistMap");
+                if (wishlistMap.get(args.get("itemIdSingle")) == true) {
+                    ImageView cartView = view.findViewById(R.id.idCartImg);
+                    cartView.setImageResource(R.drawable.cart_off);
+                }
+                else{
+                    ImageView cartView = view.findViewById(R.id.idCartImg);
+                    cartView.setImageResource(R.drawable.cart_plus);
+                }
+            }
+            catch (Exception e){
+
+            }
+
+            cart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        HashMap<String, Boolean> wishlistMap = (HashMap<String, Boolean>) args.getSerializable("wishlistMap");
+
+                        if (wishlistMap != null && args.get("itemIdSingle") != null) {
+                            String itemId = args.get("itemIdSingle").toString();
+                            Boolean itemExistsInWishlist = wishlistMap.get(itemId);
+
+                            if (itemExistsInWishlist != null && itemExistsInWishlist) {
+                                ImageView cartView = view.findViewById(R.id.idCartImg);
+                                cartView.setImageResource(R.drawable.cart_plus);
+                                wishlistMap.put(itemId, false);
+                            } else {
+                                Log.d("melon", itemId);
+                                ImageView cartView = view.findViewById(R.id.idCartImg);
+                                cartView.setImageResource(R.drawable.cart_off);
+                                wishlistMap.put(itemId, true);
+                            }
+                        } else {
+                            Log.d("lund", "wishlistMap or itemIdSingle is null");
+                        }
+                    } catch (Exception e) {
+                        Log.d("lund", e.toString());
+                    }
+
+                }
+            });
+        }
+        catch (Exception e){
+        }
+
+
         try{
             if (args != null) {
 

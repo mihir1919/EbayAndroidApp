@@ -36,6 +36,27 @@ public class ShippingFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_shipping, container, false);
         Bundle args = getArguments();
+
+
+        TextView titleOG = view.findViewById(R.id.TV1Titless);
+        titleOG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Define the URL you want to open
+                JsonObject jobj = new Gson().fromJson(String.valueOf(args.get("jsonObject")), JsonObject.class);
+
+                String url = jobj.get("Storefront").getAsJsonObject().get("StoreURL").getAsString();
+
+                // Create an Intent to open the URL in a web browser
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                Log.d("fuck yu nigga", "fuck");
+
+                    startActivity(intent);
+            }
+        });
+
+
         try{
             if (args != null) {
                 String jsonString = args.getString("jsonObject");

@@ -144,6 +144,8 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
+                                            Toast.makeText(view.getContext(), "Item removed from wishlist", Toast.LENGTH_SHORT).show();
+
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
@@ -320,6 +322,7 @@ public class GridCustomerAdapter extends RecyclerView.Adapter<GridCustomerAdapte
                                             Log.d("item wishlist array", gridArrayLists.toString());
 //                                         R.id.cartIdView
                                         arrayList.setInWishlist("true");
+                                        Toast.makeText(view.getContext(), "Item added to wishlist", Toast.LENGTH_SHORT).show();
                                         notifyItemChanged(getAdapterPosition());
                                     }
                                     catch (Exception e){

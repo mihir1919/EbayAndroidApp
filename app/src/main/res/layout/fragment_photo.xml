@@ -24,4 +24,26 @@
         </LinearLayout>
     </ScrollView>
 
+    <FrameLayout
+        android:id="@+id/cartInDesc3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:background="@drawable/circle_background"
+        android:backgroundTint="#F44336">
+
+        <!-- Circular background for the image -->
+        <ImageView
+            android:id="@+id/idCartImg3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#FF9800"
+            android:padding="12dp"
+            android:src="@drawable/cart_plus" /> <!-- Padding for the image inside the circle -->
+
+    </FrameLayout>
+
+
 </FrameLayout>

@@ -23,6 +23,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,24 +53,46 @@ public class PhotoFragment extends Fragment {
 
         Bundle args = getArguments();
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
+try{
+    JsonObject jobj = new Gson().fromJson(String.valueOf(args.get("jsonObject")), JsonObject.class);
+    Log.d("jooooh", jobj.toString());
+    String titleOfObj = "N/A";
 
-        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getImages/";
+    try{
+        titleOfObj = jobj.get("Title").getAsString();
+        Log.d("titlelll", titleOfObj.toString());
+    }
+    catch (Exception e){
 
+    }
+}
+catch (Exception e){
+
+}
+
+
+
+//        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getImages/"+args.getString(titleOfObj);
+        JsonObject jobj = new Gson().fromJson(String.valueOf(args.get("jsonObject")), JsonObject.class);
+        Log.d("jooooh", jobj.toString());
+        String titleOfObj = "N/A";
+        String title = jobj.get("Title").getAsString();
+        String encodedTitle = jobj.get("Title").getAsString();
+
+        try {
+            encodedTitle = URLEncoder.encode(title, "UTF-8");
+
+            Log.d("encodede", encodedTitle);
+
+        } catch (UnsupportedEncodingException e) {
+            encodedTitle="iphone";
+        }
+
+
+        String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getImages/"+encodedTitle;
         String jsonString22 = args.getString("jsonObject");
         JsonObject receivedJsonObject22 = new Gson().fromJson(String.valueOf(jsonString22), JsonObject.class);
 
-        try{
-
-            if(receivedJsonObject22.get("Title").getAsString()!=null){
-                url+=receivedJsonObject22.get("Title").getAsString();
-            }
-            else{
-                url+="harrypotter";
-            }
-        }
-        catch (Exception e){
-
-        }
 
 
 //        String url = "https://dummyjson.com/products/1";

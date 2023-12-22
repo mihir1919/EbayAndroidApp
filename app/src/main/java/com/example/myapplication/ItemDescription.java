@@ -82,14 +82,15 @@ public class ItemDescription extends AppCompatActivity {
 
         try{
             fbView.setOnClickListener(view -> {
-                JsonObject gsonJsonObjectFB = new Gson().fromJson(bundle.get("jsonObject").toString(), JsonObject.class);
 
                 String facebookShareLink = "";
                 try{
-                    facebookShareLink = "https://www.facebook.com/sharer/sharer.php?u="+ gsonJsonObjectFB.get("Item").getAsJsonObject().get("ViewItemURLForNaturalSearch").getAsString() +"&amp;src=sdkpreparse";
+                    JsonObject gsonJsonObjectFB = new Gson().fromJson(bundle.get("jsonObject").toString(), JsonObject.class);
+                    Log.d("faceboooker", gsonJsonObjectFB.toString());
+                    facebookShareLink = "https://www.facebook.com/sharer/sharer.php?u="+ gsonJsonObjectFB.get("ViewItemURLForNaturalSearch").getAsString() +"&amp;src=sdkpreparse";
                 }
                 catch (Exception e){
-
+                    Log.d("faceboooker", e.toString());
                 }
                 Log.d("fblink", facebookShareLink);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookShareLink));
@@ -110,8 +111,8 @@ public class ItemDescription extends AppCompatActivity {
             catch (Exception e){
 
             }
-//            String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/"+gsonJsonObjectFB.get("ItemID").getAsString();
-            String url = "https://fastly.picsum.photos/id/361/200/200.jpg";
+            String url = "https://ebayreactmihir-2454971216.wl.r.appspot.com/getSimilarItems/"+gsonJsonObjectFB.get("ItemID").getAsString();
+//            String url = "https://fastly.picsum.photos/id/361/200/200.jpg";
 //            Log.d("urlBHA", gsonJsonObjectFB.get("itemRecommendations").getAsJsonObject().get("item").getAsJsonArray().get(0).getAsJsonObject().get("ItemID").getAsString());
             // Create a JsonObjectRequest
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,

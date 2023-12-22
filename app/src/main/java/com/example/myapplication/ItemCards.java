@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -138,6 +140,9 @@ public class ItemCards extends AppCompatActivity {
         else{
             if (intent != null) {
                 String jsonString = intent.getStringExtra("jsonObject");
+
+                Log.d("jsonvalue is this", jsonString);
+
                 HashMap<String, Boolean> wishlistMap = (HashMap<String, Boolean>) intent.getSerializableExtra("wishlistMap");
                 Log.d("checkingWishlist", wishlistMap.toString());
                 if (jsonString != null) {
@@ -236,6 +241,51 @@ public class ItemCards extends AppCompatActivity {
         else{
             findViewById(R.id.text_total_value).setVisibility(View.VISIBLE);
         }
+        TextView ttVal = findViewById(R.id.text_total_value);
+
+// Define a TextWatcher
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called to notify that the text will change, but it hasn't changed yet.
+                if(intent.getStringExtra("isWishlist").equals("false")){
+                }
+                else {
+                    try {
+                            if (Integer.parseInt(intent.getStringExtra("wishlistMapSize")) == 0) {
+                                Button b = findViewById(R.id.buttonClearToGoBackTo);
+                                b.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    catch (Exception e){
+
+                    }
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called to notify that the text has changed.
+                if(intent.getStringExtra("isWishlist").equals("false")){
+                }
+                else{
+                    if(String.valueOf(charSequence).equals("0.0")){
+                        Button b = findViewById(R.id.buttonClearToGoBackTo);
+                        b.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // This method is called to notify that the text has changed after it has been changed.
+                String newText = editable.toString();
+            }
+        };
+
+// Add the TextWatcher to the TextView
+        ttVal.addTextChangedListener(textWatcher);
+
         GridCustomerAdapter adapter = new GridCustomerAdapter(this, new GridModelList().socialMediaList(listOfArrayLists), findViewById(R.id.text_total_value));
         TextView totalShopping =  findViewById(R.id.text_total_value);
         totalShopping.setText(String.valueOf(totalVal));
@@ -251,12 +301,12 @@ public class ItemCards extends AppCompatActivity {
         adapter.setOnItemClickListener(new GridCustomerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                loadSingleItem(listOfArrayLists.get(position).get("itemId"),listOfArrayLists.get(position).get("shippingInfo"));
+                loadSingleItem(listOfArrayLists.get(position).get("itemId"),listOfArrayLists.get(position).get("shippingInfo"),(HashMap<String, Boolean>) intent.getSerializableExtra("wishlistMap"));
             }
         });
     }
 
-    public void loadSingleItem(String position, String shipping) {
+    public void loadSingleItem(String position, String shipping, HashMap<String, Boolean> wishlistMap) {
 
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
@@ -296,10 +346,27 @@ public class ItemCards extends AppCompatActivity {
 
                         try{
                             Intent intent2 = new Intent(this, ItemDescription.class);
+                            try {
+                                Intent intent = getIntent();
+                                intent2.putExtra("wishlistMap", (HashMap<String, Boolean>) intent.getSerializableExtra("wishlistMap"));
+                            }
+                            catch (Exception e){
+
+                            }
                             intent2.putExtra("jsonObject", jobj.get("Item").getAsJsonObject().toString());
+                            try {
+                                intent2.putExtra("itemIdSingle", jobj.get("Item").getAsJsonObject().get("ItemID").getAsString());
+                            }
+                            catch (Exception e){
+
+                            }
                             intent2.putExtra("shippingInfo", shipping);
-                            TextView tx =  findViewById(R.id.titleText2Title);
-//                            tx.setText(jobj.get(0).getAsJsonArray().);
+                            try {
+
+                            }
+                            catch (Exception e){
+                                intent2.putExtra("wishlistMap", wishlistMap);
+                            }
                             startActivity(intent2);
                         }
                         catch (Exception e) {
